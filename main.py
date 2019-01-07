@@ -26,16 +26,24 @@ class SensorQuery(Resource):
     import asyncio
     asyncio_event_loop = asyncio.get_event_loop()
 
-    def get(self, sensor_id):
+    def get(self, sensor_id, resource):
         print('sensor id = %d' % sensor_id)
+        print('resource = %s' % resource)
         sensor = directory.get_list_of_sensors()[sensor_id]
-        # return sensor.get_dict()
-        ret = self.asyncio_event_loop.run_until_complete(sensor.get_temp())
-        return ret
+
+        if (resource == 'temperature'):
+            value = self.asyncio_event_loop.run_until_complete(sensor.get_temperature())
+            unit = 'celsius'
+
+        elif (resource == 'humidity'):
+            value = self.asyncio_event_loop.run_until_complete(sensor.get_humidity())
+            unit = '%RH'
+
+        return {'value' : value, 'unit' : unit}
         
 
 # Initialising the HTTP REST API server
 api.add_resource(Home, '/')
 api.add_resource(Test, '/test')
-api.add_resource(SensorQuery, '/<int:sensor_id>')
+api.add_resource(SensorQuery, '/<int:sensor_id>/<string:resource>')
 app.run(debug=True, host='10.0.0.3', port=5000)
