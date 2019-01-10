@@ -6,15 +6,6 @@ import urllib.request
 from parser import BorderRouterHtmlParser
 from sensortag import SensorTag
 
-# content = urllib.request.urlopen('http://[fd00::212:4b00:812:4]').read()
-# content = content.decode('UTF-8')
-
-# parser = BorderRouterHtmlParser()
-# parser.feed(content)
-# print(content)
-# ret = parser.get_sensor_ip_addr()
-# print(ret)
-
 class Directory:
     test_string = 'Hello World from Directory'
     BORDER_ROUTER_URL = 'http://[fd00::212:4b00:812:4]'
