@@ -1,5 +1,5 @@
 import asyncio
-from aiocoap import Context, Message
+from aiocoap import Context, Message, Code
 
 class SensorTag:
     def __init__(self, id, ip_address):
@@ -20,7 +20,7 @@ class SensorTag:
         coap_client = await Context.create_client_context()
         my_uri = 'coap://' + '[' + self.ip_address + ']' + '/sen/tmp/amb'
         # 'coap://[fd00::212:4b00:b01:7a86]/sen/tmp/amb'
-        my_request = Message(code=GET, uri=my_uri)
+        my_request = Message(code=Code.GET, uri=my_uri)
 
         try:
             response_from_server = await coap_client.request(my_request).response
@@ -36,7 +36,7 @@ class SensorTag:
         coap_client = await Context.create_client_context()
         my_uri = 'coap://' + '[' + self.ip_address + ']' + '/sen/hdc/h'
         # 'coap://[fd00::212:4b00:b01:7a86]/sen/tmp/amb'
-        my_request = Message(code=GET, uri=my_uri)
+        my_request = Message(code=Code.GET, uri=my_uri)
 
         try:
             response_from_server = await coap_client.request(my_request).response
