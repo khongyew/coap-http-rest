@@ -2,13 +2,13 @@
 
 from flask import Flask
 from flask_restful import Api, Resource
-from directory import Directory, SensorTag
+from directory import Directory
 
 app = Flask(__name__)
 api = Api(app)
 
-# Query the directory to get the list of sensors 
-# (which are dictionaries containing info such as id, ip_address, status)
+# Initialise and update the directory to get information about sensors on the network
+# (e.g. info such as id, ip_address, status)
 directory = Directory()
 directory.update()
 
