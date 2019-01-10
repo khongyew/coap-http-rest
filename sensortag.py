@@ -1,4 +1,3 @@
-import asyncio
 from aiocoap import Context, Message, Code
 
 class SensorTag:
