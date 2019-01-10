@@ -3,6 +3,7 @@
 from flask import Flask
 from flask_restful import Api, Resource
 from directory import Directory
+import asyncio
 
 app = Flask(__name__)
 api = Api(app)
@@ -23,7 +24,7 @@ class Test(Resource):
         return {'list of test' : list_of_test}
 
 class SensorQuery(Resource):
-    import asyncio
+
     asyncio_event_loop = asyncio.get_event_loop()
 
     def get(self, sensor_id, resource):
