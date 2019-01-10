@@ -1,3 +1,8 @@
+# This module is designed to serve as an abstraction of the SensorTag device.
+# The user should be able to get sensor readings from the SensorTag device using this module.
+# This module uses the CoAP protocol to send request (GET, PUT, DELETE etc.) 
+# to the CoAP Server running on the SensorTag device.
+
 from aiocoap import Context, Message, Code
 
 class SensorTag:
