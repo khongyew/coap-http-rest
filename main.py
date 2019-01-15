@@ -39,6 +39,8 @@ class SensorQuery(Resource):
         elif (resource == 'humidity'):
             value = self.asyncio_event_loop.run_until_complete(sensor.get_humidity())
             unit = '%RH'
+        
+        # TODO: expose all the api of the sensor tag coap server
 
         return {'value' : value, 'unit' : unit}
         

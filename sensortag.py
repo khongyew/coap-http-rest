@@ -11,6 +11,8 @@ class SensorTag:
         self.ip_address = ip_address    # string
         self.status = 'Available'       # Place holder TODO: implement status 
 
+    # Returns a dictionary representation of the SensorTag instance
+    # This should contain useful information about the sensor tag 
     def get_dict(self):
         json_dict = {
             'id' : self.id, 
