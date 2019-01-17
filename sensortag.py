@@ -52,3 +52,56 @@ class SensorTag:
         else:
             # print('Result: %s\n%r'%(response.code, response.payload))
             return response_from_server.payload.decode('UTF-8')
+
+    # Return resource (sensor readings) in dict/json format
+    async def get_resource(self, sensor_chip, measurement):
+        coap_client = await Context.create_client_context()
+        my_uri = self.generate_uri(sensor_chip, measurement)
+
+        print('uri = ' + my_uri)
+ 
+        if(sensor_chip == 'mpu'):
+            # MPU sensor query (acc or gyro)
+            # need to query readings in x, y and z axis
+
+            x_axis_request = Message(code=Code.GET, uri=(my_uri + '/x'))
+            y_axis_request = Message(code=Code.GET, uri=(my_uri + '/y'))
+            z_axis_request = Message(code=Code.GET, uri=(my_uri + '/z'))
+
+            ret = {}
+            
+            # TODO handle exception from coap client request
+            response_from_server = await coap_client.request(x_axis_request).response
+            ret['x'] = response_from_server.payload.decode('UTF-8')
+
+            response_from_server = await coap_client.request(y_axis_request).response
+            ret['y'] = response_from_server.payload.decode('UTF-8')
+            
+            response_from_server = await coap_client.request(z_axis_request).response
+            ret['z'] = response_from_server.payload.decode('UTF-8')
+
+            return ret
+
+        else:
+            # Regular sensor query
+            my_request = Message(code=Code.GET, uri=my_uri)
+
+            try:
+                response_from_server = await coap_client.request(my_request).response
+            except Exception as e:
+                print('Failed to fetch resource:')
+                print(e)
+            else:
+                # print('Result: %s\n%r'%(response.code, response.payload))
+                value = response_from_server.payload.decode('UTF-8')
+                return {'value' : value, 'unit' : ''}
+
+    
+    def generate_uri(self, sensor_chip, measurement):
+        protocol = 'coap://'
+        ip_address = '[' + self.ip_address + ']'
+        directory = '/sen/' + sensor_chip + '/' + measurement
+        
+        my_uri = protocol + ip_address + directory
+
+        return my_uri

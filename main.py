@@ -27,26 +27,26 @@ class SensorQuery(Resource):
 
     asyncio_event_loop = asyncio.get_event_loop()
 
-    def get(self, sensor_id, resource):
-        print('sensor id = %d' % sensor_id)
-        print('resource = %s' % resource)
-        sensor = directory.get_list_of_sensors()[sensor_id]
+    def get(self, device_id, sensor_chip, measurement):
 
-        if (resource == 'temperature'):
-            value = self.asyncio_event_loop.run_until_complete(sensor.get_temperature())
-            unit = 'celsius'
+        sensor = directory.get_list_of_sensors()[device_id]
 
-        elif (resource == 'humidity'):
-            value = self.asyncio_event_loop.run_until_complete(sensor.get_humidity())
-            unit = '%RH'
+        # if (resource == 'temperature'):
+        #     value = self.asyncio_event_loop.run_until_complete(sensor.get_temperature())
+        #     unit = 'celsius'
+
+        # elif (resource == 'humidity'):
+        #     value = self.asyncio_event_loop.run_until_complete(sensor.get_humidity())
+        #     unit = '%RH'
         
-        # TODO: expose all the api of the sensor tag coap server
+        resource = self.asyncio_event_loop.run_until_complete(
+            sensor.get_resource(sensor_chip, measurement))
 
-        return {'value' : value, 'unit' : unit}
+        return resource
         
 
 # Initialising the HTTP REST API server
 api.add_resource(Home, '/')
 api.add_resource(Test, '/test')
-api.add_resource(SensorQuery, '/<int:sensor_id>/<string:resource>')
+api.add_resource(SensorQuery, '/<int:device_id>/<string:sensor_chip>/<string:measurement>')
 app.run(debug=True, host='10.0.0.3', port=5000)
