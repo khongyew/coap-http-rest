@@ -1,0 +1,56 @@
+
+This document shows the endpoints of the CoAP API for the Sensor Tag
+
+</.well-known/core>;ct=40 
+
+</sen/batmon/temp>;title="Battery Temp";rt="C" 
+ 
+</sen/batmon/voltage>;title="Battery Voltage";rt="mV" 
+  
+</dev/mdl/hw>;title="Hardware version";rt="text" 
+  
+</dev/mdl/sw>;title="Software version";rt="text" 
+  
+</dev/uptime>;title="Uptime";rt="seconds" 
+  
+</dev/cfg_reset>;title="Reset Device Config: POST";rt="Control" 
+  
+</net/parent/RSSI>;title="Parent RSSI";rt="dBm" 
+  
+</net/parent/IPv6>;title="Preferred Parent";rt="IPv6 address" 
+  
+</dev/ble_advd>;title="BLE advd config: POST/PUT name=<name>&mode=on|off&interval=<secs>";rt="Control" 
+  
+</lt/g>;title="Green LED";rt="Control" 
+
+</lt/r>;title="Red LED";rt="Control" 
+  
+</lt>;title="LEDs: ?color=r|g 
+  
+POST/PUT mode=on|off";rt="Control" 
+  
+</sen/bar/temp>;title="Barometer (Temperature)";rt="C" 
+  
+</sen/bar/pres>;title="Barometer (Pressure)";rt="hPa (hectopascal / millibar)" 
+  
+</sen/tmp/amb>;title="Temperature (Ambient)";rt="C" 
+  
+</sen/tmp/obj>;title="Temperature (Object)";rt="C" 
+  
+</sen/hdc/t>;title="Temperature";rt="C" 
+  
+</sen/hdc/h>;title="Humidity";rt="%RH" 
+  
+</sen/opt/light>;title="Illuminance";rt="Lux" 
+  
+</sen/mpu/acc/x>;title="Acc X";rt="G" 
+  
+</sen/mpu/acc/y>;title="Acc Y";rt="G" 
+  
+</sen/mpu/acc/z>;title="Acc Z";rt="G" 
+ 
+</sen/mpu/gyro/x>;title="Gyro X";rt="deg/sec" 
+  
+</sen/mpu/gyro/y>;title="Gyro Y";rt="deg/sec" 
+ 
+</sen/mpu/gyro/z>;title="Gyro Z";rt="deg/sec" 
