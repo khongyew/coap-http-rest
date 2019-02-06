@@ -105,7 +105,7 @@ def test():
 
     record(filename)
 
-def test1():
+def start():
     index = 0
     while os.path.exists('sensor-data-%s.csv' % index):
         index += 1
@@ -113,5 +113,4 @@ def test1():
     filename = 'sensor-data-%s.csv' % index
     periodic_record(filename)
 
-test()
 
