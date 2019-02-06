@@ -94,15 +94,22 @@ def record(filename, sensors):
     
     csvfile.close()
 
+# Generate filename that does not yet exist in the directory
+# Example:  if "sensor-data-0.csv" is already in the dir, 
+#           the method will return "sensor-data-1.csv"
+# The file name has a increasing index 
+def generate_filename():
+    index = 0
+    while os.path.exists('sensor-data-%s.csv' % index):
+        index += 1
+
+    filename = 'sensor-data-%s.csv' % index
+    return filename
 
 def test():
     # Write to CSV file
     # incremental file names
-    i = 0
-    while os.path.exists('sensor-data-%s.csv' % i):
-        i += 1
-
-    filename = 'sensor-data-%s.csv' % i
+    filename = generate_filename()
     
     directory = Directory()
     directory.update()
@@ -116,11 +123,7 @@ def test():
     record(filename, sensors)
 
 def start(sensors):
-    index = 0
-    while os.path.exists('sensor-data-%s.csv' % index):
-        index += 1
-
-    filename = 'sensor-data-%s.csv' % index
+    filename = generate_filename()
     periodic_record(filename, sensors, 10)
 
 if __name__ == "__main__":
