@@ -51,7 +51,7 @@ def get_all_readings(sensor_id=None, sensor_instance=None):
 
     return light, temperature, humidty
 
-def data_recorder(filename, start_time=time.time()):
+def periodic_record(filename, start_time=time.time()):
     next_time = start_time + 300 # period
     
     # Do processing here
@@ -65,7 +65,7 @@ def data_recorder(filename, start_time=time.time()):
     # End of processing 
 
     interval = next_time - time.time()
-    threading.Timer(interval, data_recorder, args=[filename], kwargs={'start_time':next_time}).start()
+    threading.Timer(interval, periodic_record, args=[filename], kwargs={'start_time':next_time}).start()
 
 def record(filename):
     timestamp = datetime.datetime.now()
@@ -111,7 +111,7 @@ def test1():
         index += 1
 
     filename = 'sensor-data-%s.csv' % index
-    data_recorder(filename)
+    periodic_record(filename)
 
 test()
 
