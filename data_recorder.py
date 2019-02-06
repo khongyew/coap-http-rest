@@ -55,7 +55,7 @@ def periodic_record(filename, sensors, period, start_time=time.time()):
 
     # print(datetime.datetime.now())
 
-    record(filename, sensors)
+    record_readings(filename, sensors)
 
     # ------------------
     # End of processing 
@@ -71,7 +71,7 @@ def periodic_record(filename, sensors, period, start_time=time.time()):
 
     t.start()
 
-def record(filename, sensors):
+def record_readings(filename, sensors):
     timestamp = datetime.datetime.now()
 
     csvfile = open(filename , 'a')
@@ -120,7 +120,7 @@ def test():
     #     light, temperature, humidity = get_all_readings(sensor_id = i)
     #     print(light, temperature, humidity)
 
-    record(filename, sensors)
+    record_readings(filename, sensors)
 
 def start(sensors):
     filename = generate_filename()
