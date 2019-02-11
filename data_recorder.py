@@ -90,7 +90,9 @@ def record_readings(filename, sensors):
         id = sensor.id
 
         # Write to CSV file
-        writer.writerow([timestamp, id, light, temperature, humidity])
+        data = [timestamp, id, light, temperature, humidity]
+        writer.writerow(data)
+        print(data)
     
     csvfile.close()
 
@@ -124,7 +126,7 @@ def test():
 
 def start(sensors):
     filename = generate_filename()
-    periodic_record(filename, sensors, 10)
+    periodic_record(filename, sensors, 60)
 
 if __name__ == "__main__":
     directory = Directory()

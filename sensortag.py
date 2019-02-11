@@ -57,7 +57,7 @@ class SensorTag:
     async def get_resource(self, sensor_chip, measurement):
         my_uri = self.generate_uri(sensor_chip, measurement)
 
-        print('uri = ' + my_uri)
+        # print('uri = ' + my_uri)
  
         if(sensor_chip == 'mpu'):
             # MPU sensor query (acc or gyro)
