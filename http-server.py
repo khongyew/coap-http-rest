@@ -43,7 +43,11 @@ class SensorQuery(Resource):
             sensor.get_resource(sensor_chip, measurement))
 
         return resource
-        
+
+# Start Data Recorder        
+# import data_recorder
+# sensors = directory.get_list_of_sensors()
+# data_recorder.start(sensors)
 
 # Initialising the HTTP REST API server
 api.add_resource(Home, '/')
