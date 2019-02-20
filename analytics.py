@@ -6,6 +6,8 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.animation as animation
 from matplotlib import style
 
+import os
+
 # plan:
 # 1. open the latest csv file
 # 2. perform kmeans on the data
@@ -14,8 +16,16 @@ from matplotlib import style
 fig = plt.figure()
 ax = fig.add_subplot(111, projection = '3d')
 
+def get_latest_file():
+    index = 0
+    while os.path.exists('sensor-data-%s.csv' % index):
+        index += 1
+    filename = 'sensor-data-%s.csv' % (index-1)
+    return open(filename, 'r')
+
 def animate(i):
-    csv_file = open('sensor-data-0.csv', 'r')
+    # Get the latest available csv file
+    csv_file = get_latest_file()
     csv_file.readline() # skip the first line
 
     data = []
