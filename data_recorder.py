@@ -125,6 +125,9 @@ def test():
     record_readings(filename, sensors)
 
 def start(sensors):
+    # Generate a new filename every time the recorder is started (or restarted)
+    # Sensor reading will be written (appended) to that file (with the filename)
+
     filename = generate_filename()
     periodic_record(filename, sensors, 60)
 
