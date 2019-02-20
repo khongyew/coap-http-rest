@@ -129,6 +129,7 @@ def start(sensors):
     # Sensor reading will be written (appended) to that file (with the filename)
 
     filename = generate_filename()
+    print('writing to ' + filename)
     periodic_record(filename, sensors, 60)
 
 if __name__ == "__main__":
