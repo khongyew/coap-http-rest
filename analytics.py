@@ -41,10 +41,20 @@ def animate(i):
     
     data = np.array(data)
 
+    kmeans = KMeans(n_clusters=3)
+    kmeans.fit(data)
+
+    data_size = len(data)
+
     ax.clear()
-    ax.scatter(data[:,0], data[:,1], data[:,2], c='b', s=10)
+    ax.scatter(data[:data_size-2,0], data[:data_size-2,1], data[:data_size-2,2], c=kmeans.labels_[:data_size-2], s=10)
+    ax.scatter(data[data_size-2:,0], data[data_size-2:,1], data[data_size-2:,2], c='red', s=20, marker='X')
+
+    ax.set_xlabel('temperature')
+    ax.set_ylabel('humidity')
+    ax.set_zlabel('light')
 
     csv_file.close()
 
-ani = animation.FuncAnimation(fig, animate, interval=1000)
+ani = animation.FuncAnimation(fig, animate, interval=60000)
 plt.show()
