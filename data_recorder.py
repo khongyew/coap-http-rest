@@ -48,6 +48,9 @@ def get_all_readings(sensors=None, sensor_id=None, sensor_instance=None):
     return light, temperature, humidty
 
 def periodic_record(filename, sensors, period, start_time=time.time()):
+    # Using threading.Timer() without drift:
+    # https://stackoverflow.com/a/18180189
+
     next_time = start_time + period
     
     # Do processing here
