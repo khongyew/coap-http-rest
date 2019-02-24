@@ -72,7 +72,8 @@ def periodic_record(filename, sensors, period, start_time=time.time()):
     t.start()
 
 def record_readings(filename, sensors):
-    timestamp = datetime.datetime.now()
+    timestamp = datetime.datetime.now().replace(microsecond=0) # Date Time without microseconds
+    timestamp = str(timestamp)
 
     csvfile = open(filename , 'a')
     writer = csv.writer(csvfile)
