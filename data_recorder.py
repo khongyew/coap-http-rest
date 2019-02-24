@@ -78,7 +78,7 @@ def record_readings(filename, sensors):
     timestamp = datetime.datetime.now().replace(microsecond=0) # Date Time without microseconds
     timestamp = str(timestamp)
 
-    csvfile = open(filename , 'a')
+    csvfile = open(filename , 'a', newline='')
     writer = csv.writer(csvfile)
 
     # Write CSV column headings if the file is empty (i.e new file)
