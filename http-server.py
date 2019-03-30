@@ -53,4 +53,4 @@ class SensorQuery(Resource):
 api.add_resource(Home, '/')
 api.add_resource(Test, '/test')
 api.add_resource(SensorQuery, '/<int:device_id>/<string:sensor_chip>/<string:measurement>')
-app.run(debug=True, host='10.0.0.3', port=5000)
+app.run(debug=True, host='0.0.0.0', port=5000)
