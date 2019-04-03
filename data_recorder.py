@@ -5,6 +5,7 @@ import asyncio
 import datetime, threading, time
 import os, csv
 
+loop = asyncio.get_event_loop() # TODO: Make the loop non-global
 
 # Readings to get:
 # light             10.0.0.3:5000/0/opt/light
@@ -15,14 +16,13 @@ import os, csv
 # Gets the readings from the Sensor Tag
 # Returns light, temperature, humidity as a tuple 
 def get_all_readings(sensors=None, sensor_id=None, sensor_instance=None):
-    # loop = asyncio.get_event_loop()
 
-    # Code will be running outside of the main thread
-    # New asyncio event loop needs to be created 
-    # https://stackoverflow.com/questions/50935153/runtimeerror-there-is-no-current-event-loop-in-thread-dummy-1
-
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
+    # Code will be running in a newly spawned thread, outside of the main thread 
+    # asyncio.get_event_loop() will fail in the new thread
+    # See this: https://stackoverflow.com/questions/50935153/runtimeerror-there-is-no-current-event-loop-in-thread-dummy-1
+    #  
+    # asyncio.new_event_loop() will create some other issues
+    # Best solution for now: make the event loop from the main thread available as a global variable
 
     if sensors is not None and sensor_id is not None:
         sensor = sensors[sensor_id]
@@ -33,19 +33,23 @@ def get_all_readings(sensors=None, sensor_id=None, sensor_instance=None):
     else:
         print('error') 
 
-    fut = asyncio.gather(
-        sensor.get_resource('opt', 'light'),
-        sensor.get_resource('tmp', 'amb'),
-        sensor.get_resource('hdc', 'h')
-    )
+    # fut = asyncio.gather(
+    #     sensor.get_resource('opt', 'light'),
+    #     sensor.get_resource('tmp', 'amb'),
+    #     sensor.get_resource('hdc', 'h')
+    # )
 
-    ret = loop.run_until_complete(fut)
+    # ret = loop.run_until_complete(fut)
 
-    light           = ret[0]['value']
-    temperature     = ret[1]['value']
-    humidty         = ret[2]['value']
+    # light           = ret[0]['value']
+    # temperature     = ret[1]['value']
+    # humidity         = ret[2]['value']
 
-    return light, temperature, humidty
+    light = loop.run_until_complete(sensor.get_resource('opt', 'light'))['value']
+    temperature = loop.run_until_complete(sensor.get_resource('tmp', 'amb'))['value']
+    humidity = loop.run_until_complete(sensor.get_resource('hdc', 'h'))['value']
+
+    return light, temperature, humidity
 
 def periodic_record(filename, sensors, period, start_time=time.time()):
     # Using threading.Timer() without drift:
