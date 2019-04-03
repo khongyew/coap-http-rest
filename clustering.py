@@ -32,7 +32,7 @@ csv_file = get_latest_file()
 csv_file.readline() # Skip the first line
 
 # Parse the CSV file and split the data into
-# sensors[0], sensors[1], sensors[2]
+# sensors_readings[0], sensors_readings[1], sensors_readings[2]
 for line in csv_file:
     line = line.split(',')
 
@@ -73,7 +73,7 @@ for i in range(NUM_OF_SENSORS):
 
     cluster_data["sensor" + str(i)] = {"cluster0count" : count_0, "cluster1count": count_1}
 
-
+# Convert cluster data to json
 json_string = json.dumps(cluster_data)
 
 # write cluster data to file
