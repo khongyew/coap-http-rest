@@ -37,6 +37,7 @@ def clustering_task():
 
     # Read the latest CSV file
     csv_file = get_latest_file()
+    print("Using data from: " + csv_file.name)
     csv_file.readline() # Skip the first line
 
     # Parse the CSV file and split the data into
