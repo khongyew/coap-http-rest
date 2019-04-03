@@ -6,10 +6,37 @@
 from aiocoap import Context, Message, Code
 
 class SensorTag:
+    
+    coap_client = None
+    
+    @classmethod
+    async def init_coap_client(cls):
+        cls.coap_client = await Context.create_client_context()
+
+    @classmethod
+    async def make_coap_request(cls, request):
+        
+        # Create a coap_client instance for the SensorTag class
+        # There should only be one coap_client instance that will be used by every SensorTag instance
+        # Not wise to generate multiple coap_client instance since it can lead to "too many open files" error
+        # https://stackoverflow.com/questions/50951632/oserror-errno-24-too-many-open-files-with-sockets-from-aiocoap-context-req
+        if cls.coap_client == None:
+            await cls.init_coap_client()
+        
+        try:
+            response_from_server = await cls.coap_client.request(request).response
+        except Exception as e:
+            print('Failed to fetch resource:')
+            print(e)
+        else:
+            # code = response_from_server.code
+            payload = response_from_server.payload.decode('UTF-8')
+            return payload
+
     def __init__(self, id, ip_address):
         self.id = id
         self.ip_address = ip_address    # string
-        self.status = 'Available'       # Place holder TODO: implement status 
+        self.status = 'Available'       # Place holder TODO: implement status
 
     # Returns a dictionary representation of the SensorTag instance
     # This should contain useful information about the sensor tag 
@@ -21,6 +48,7 @@ class SensorTag:
             }
         return json_dict
     
+    # Deprecated. Don't use.
     async def get_temperature(self):
         #Uses CoAP client to get temperature readings from a sensor tag
         coap_client = await Context.create_client_context()
@@ -37,6 +65,7 @@ class SensorTag:
             # print('Result: %s %r'%(response_from_server.code, response_from_server.payload))
             return response_from_server.payload.decode('UTF-8')
 
+    # Deprecated. Don't use.
     async def get_humidity(self):
         #Uses CoAP client to get temperature readings from a sensor tag
         coap_client = await Context.create_client_context()
@@ -80,7 +109,7 @@ class SensorTag:
             value = await self.make_coap_request(my_request)
             return {'value' : value, 'unit' : ''}
 
-    
+    # Generates the uri that will be used to query the CoAP server on the SensorTag 
     def generate_uri(self, sensor_chip, measurement):
         protocol = 'coap://'
         ip_address = '[' + self.ip_address + ']'
@@ -89,16 +118,3 @@ class SensorTag:
         my_uri = protocol + ip_address + directory
 
         return my_uri
-    
-    async def make_coap_request(self, request):
-        coap_client = await Context.create_client_context()
-        
-        try:
-            response_from_server = await coap_client.request(request).response
-        except Exception as e:
-            print('Failed to fetch resource:')
-            print(e)
-        else:
-            # code = response_from_server.code
-            payload = response_from_server.payload.decode('UTF-8')
-            return payload
